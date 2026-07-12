@@ -513,25 +513,37 @@
                 loadingText.style.display = 'block';
 
                 try {
-                    // Create private bucket secure short-lived temporary URL
+                    // Force the browser to download instead of previewing by adding download options
                     const { data, error } = await client.storage
                         .from('papers')
-                        .createSignedUrl(path, 30);
+                        .createSignedUrl(path, 30, {
+                            download: `${filename}.pdf` // This triggers the Content-Disposition attachment header
+                        });
 
                     if (error) throw error;
 
-                    // Trigger direct native browser download action block cleanly
+                    // Fetch the file as a binary blob to force an instant local download prompt
+                    const response = await fetch(data.signedUrl);
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    const blob = await response.blob();
+
+                    // Create a secure local object URL for the blob
+                    const blobUrl = window.URL.createObjectURL(blob);
+
+                    // Trigger a clean hidden click action to start the download instantly in the background
                     const link = document.createElement('a');
-                    link.href = data.signedUrl;
+                    link.href = blobUrl;
                     link.download = `${filename}.pdf`;
-                    link.target = '_blank';
                     document.body.appendChild(link);
                     link.click();
+
+                    // Clean up memory space
                     document.body.removeChild(link);
+                    window.URL.revokeObjectURL(blobUrl);
 
                     loadingText.style.display = 'none';
                 } catch (err) {
-                    console.error("Download Link Failure:", err);
+                    console.error("Download Process Failure:", err);
                     loadingText.innerText = "Error launching file download.";
                 }
             }
