@@ -1,0 +1,108 @@
+.paperRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.75rem;
+  transition: var(--transition-smooth);
+}
+
+.paperRow:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  padding-right: 1.5rem;
+}
+
+.subjectName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.metaContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.codeBadge {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.metaTag {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-spring);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.downloadButton:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
+}
+
+.downloadButton:active {
+  transform: translateY(0) scale(1);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 640px) {
+  .paperRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+  .details {
+    padding-right: 0;
+  }
+  .downloadButton {
+    width: 100%;
+  }
+}

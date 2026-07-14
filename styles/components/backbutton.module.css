@@ -1,0 +1,36 @@
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  margin-bottom: 1.5rem;
+}
+
+.backBtn:hover {
+  color: var(--text-primary);
+  border-color: var(--glass-border-hover);
+  background: rgba(255, 255, 255, 0.03);
+  transform: translateX(-3px);
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  transition: var(--transition-smooth);
+}
+
+.backBtn:hover .icon {
+  transform: translateX(-2px);
+}
