@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'Previous Year Question Papers | Chhattisgarh Academic Portal',
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         {children}
+        <Analytics />
       </body>
     </html>
   );
