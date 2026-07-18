@@ -52,7 +52,7 @@ export default async function HomePage() {
           <div style={{
             background: 'rgba(239, 68, 68, 0.1)',
             border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#fca5a5',
+            color: 'var(--accent-orange)',
             padding: '1rem',
             borderRadius: '12px',
             fontSize: '0.9rem'

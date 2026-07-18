@@ -82,6 +82,19 @@ export async function GET(request) {
               transition: all 0.2s ease;
             }
             .btn:hover { background: #228b82; transform: translateY(-1px); }
+            @media (prefers-color-scheme: dark) {
+              body {
+                background-color: #002b36;
+                color: #93a1a1;
+              }
+              .card {
+                background: #073642;
+                border-color: rgba(147, 161, 161, 0.15);
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+              }
+              h2 { color: #93a1a1; }
+              p { color: #586e75; }
+            }
           </style>
         </head>
         <body>

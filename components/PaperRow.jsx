@@ -100,7 +100,7 @@ export default function PaperRow({ paper }) {
           position: 'fixed',
           bottom: '1.5rem',
           right: '1.5rem',
-          background: '#10b981',
+          background: 'var(--accent-emerald)',
           color: '#ffffff',
           padding: '0.65rem 1.25rem',
           borderRadius: '9999px',

@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import { Analytics } from '@vercel/analytics/next';
+import { ThemeProvider } from '../components/ThemeProvider';
 
 export const metadata = {
   title: 'Previous Year Question Papers | Chhattisgarh Academic Portal',
@@ -14,10 +15,12 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        {children}
-        <Analytics />
+        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+          {children}
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   );

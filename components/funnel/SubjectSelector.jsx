@@ -19,8 +19,8 @@ export default function SubjectSelector({ university, uniRecord, collegeRecord, 
       <div className="glass-panel">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
           <div>
-            <span style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {courseRecord.name} &bull; {selectedSemester}
+            <span style={{ fontSize: '0.78rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {university} &bull; {courseRecord?.name} &bull; {selectedSemester}
             </span>
             <h2 style={{ fontSize: '1.45rem', marginTop: '0.2rem', fontWeight: 700 }}>
               Select Subject

@@ -76,7 +76,7 @@ export default function PaperArchive({
         {allPapers && allPapers.length > 0 ? (
           <PapersFilterBar examTypes={examTypes} years={years} />
         ) : (
-          <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', background: '#fefcf7', borderRadius: '16px', border: '1.5px dashed rgba(147, 161, 161, 0.45)', marginBottom: '1.5rem', boxShadow: '0 2px 8px rgba(7, 54, 66, 0.03)' }}>
+          <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', background: 'var(--surface-elevated)', borderRadius: '16px', border: '1.5px dashed var(--border-crisp)', marginBottom: '1.5rem', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' }}>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>
               No question papers uploaded for this subject yet.
             </p>
@@ -90,7 +90,7 @@ export default function PaperArchive({
                 <PaperRow key={paper.id} paper={paper} />
               ))
             ) : (
-              <div style={{ textAlign: 'center', padding: '3rem 1.5rem', background: '#fefcf7', borderRadius: '16px', border: '1.5px dashed rgba(147, 161, 161, 0.45)', boxShadow: '0 2px 8px rgba(7, 54, 66, 0.03)' }}>
+              <div style={{ textAlign: 'center', padding: '3rem 1.5rem', background: 'var(--surface-elevated)', borderRadius: '16px', border: '1.5px dashed var(--border-crisp)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' }}>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>
                   No question papers match the selected filters.
                 </p>
@@ -101,10 +101,10 @@ export default function PaperArchive({
           <div style={{ 
             textAlign: 'center', 
             padding: '3.5rem 1.5rem', 
-            background: '#fefcf7', 
+            background: 'var(--surface-elevated)', 
             borderRadius: '16px', 
-            border: '1.5px dashed rgba(147, 161, 161, 0.45)',
-            boxShadow: '0 2px 8px rgba(7, 54, 66, 0.03)',
+            border: '1.5px dashed var(--border-crisp)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

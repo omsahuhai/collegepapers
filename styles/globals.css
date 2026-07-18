@@ -40,6 +40,29 @@
   --transition-spring: all 0.5s var(--spring-easing);
 }
 
+[data-theme='dark'] {
+  /* Solarized Dark Theme */
+  --bg-obsidian: #002b36;
+  --bg-grid-pattern: radial-gradient(circle, rgba(147, 161, 161, 0.08) 2px, transparent 2px);
+  
+  --surface-card: #073642;
+  --surface-card-hover: #002b36;
+  --surface-elevated: #001f27;
+  --surface-backdrop: rgba(0, 43, 54, 0.85);
+  
+  --border-crisp: rgba(147, 161, 161, 0.15);
+  --border-hover: #2aa198;
+  --border-highlight: rgba(42, 161, 152, 0.2);
+  
+  --text-primary: #93a1a1;
+  --text-secondary: #586e75;
+  --text-muted: #073642;
+  --text-accent: #2aa198;
+  
+  --shadow-vault: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 4px 12px rgba(42, 161, 152, 0.15);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

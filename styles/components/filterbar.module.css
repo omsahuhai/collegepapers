@@ -1,10 +1,10 @@
 .container {
   margin-bottom: 1.75rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #fefcf7 0%, #f4eee1 100%);
+  background: linear-gradient(135deg, var(--surface-card) 0%, var(--surface-card-hover) 100%);
   border-radius: 18px;
-  border: 1.5px solid rgba(147, 161, 161, 0.4);
-  box-shadow: 0 6px 20px rgba(7, 54, 66, 0.07), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  border: 1.5px solid var(--border-crisp);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07), inset 0 2px 4px rgba(255, 255, 255, 0.05);
   width: 100%;
   box-sizing: border-box;
 }
@@ -102,9 +102,9 @@
   height: 44px;
   padding: 0.65rem 2.5rem 0.65rem 1rem;
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--surface-elevated);
   color: var(--text-primary);
-  border: 1.5px solid rgba(147, 161, 161, 0.45);
+  border: 1.5px solid var(--border-crisp);
   outline: none;
   font-size: 0.94rem;
   font-weight: 600;
@@ -123,12 +123,12 @@
 }
 
 .select option {
-  background: #ffffff;
-  color: #073642;
+  background: var(--surface-elevated);
+  color: var(--text-primary);
 }
 
 .select option[disabled] {
-  color: #93a1a1;
+  color: var(--text-muted);
 }
 
 .buttonWrapper {
