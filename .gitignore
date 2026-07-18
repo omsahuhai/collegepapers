@@ -16,17 +16,8 @@ out/
 .DS_Store
 Thumbs.db
 
-# Agent/Workspace notes & prompt files
-agent/
+# Workspace notes
 .agents/
 *.md
 !README.md
-
-# Legacy code and backups
-index.html
-database/backup_legacy.sql
-skills-lock.json
-
-# Local profiling reports
-build_stats*.txt
-lighthouse-report/
+Online Hackathon Themes & Guidelines.docx
