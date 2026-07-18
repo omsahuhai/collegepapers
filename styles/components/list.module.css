@@ -1,0 +1,111 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-card);
+  border: 2px solid var(--border-crisp);
+  border-radius: 20px;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  transition: var(--transition-spring);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-vault);
+}
+
+.item:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  background: var(--surface-card-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+.leftContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stepBadge {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--bg-obsidian);
+  border: 2px solid var(--border-crisp);
+  color: var(--accent-primary);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition-spring);
+}
+
+.item:hover .stepBadge {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+.item:hover .title {
+  color: var(--accent-primary);
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.levelBadge {
+  background: var(--bg-obsidian);
+  border: 2px solid var(--border-crisp);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 8px;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+  transition: var(--transition-spring);
+}
+
+.item:hover .arrow {
+  color: var(--accent-primary);
+  transform: translateX(5px);
+}

@@ -1,0 +1,150 @@
+.paperRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-card);
+  border: 2px solid var(--border-crisp);
+  border-radius: 24px;
+  padding: 1.35rem 1.6rem;
+  margin-bottom: 0.85rem;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-vault);
+}
+
+.paperRow:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-card-hover);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-4px);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  padding-right: 1.5rem;
+}
+
+.subjectName {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.35;
+  font-family: var(--font-display);
+}
+
+.metaContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.codeBadge {
+  color: var(--accent-cyan);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metaTag {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.metaContainer > * + *::before {
+  content: "•";
+  margin-right: 0.5rem;
+  color: var(--text-secondary);
+  opacity: 0.4;
+}
+
+.actionsGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  background: var(--surface-card);
+  border: 2px solid var(--border-crisp);
+  color: var(--text-secondary);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-spring);
+}
+
+.iconBtn:hover {
+  background: var(--bg-obsidian);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+.savedBtnActive {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: #ffffff !important;
+  box-shadow: var(--shadow-glow);
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--accent-emerald);
+  border: 2px solid var(--accent-emerald);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-spring);
+  box-shadow: var(--shadow-vault);
+  height: 42px;
+}
+
+.downloadButton:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.downloadButton:active {
+  transform: translateY(0);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 640px) {
+  .paperRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+  .details {
+    padding-right: 0;
+  }
+  .actionsGroup {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .downloadButton {
+    flex: 1;
+  }
+}
