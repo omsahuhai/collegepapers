@@ -48,7 +48,7 @@ export default async function FunnelControllerPage({ params }) {
     if (activeCollegeIds.length > 0) {
       const { data: collegesData } = await supabase
         .from('colleges')
-        .select('id, name, code, district')
+        .select('id, name, code, district, logo_url')
         .in('id', activeCollegeIds)
         .order('name', { ascending: true });
       colleges = collegesData || [];

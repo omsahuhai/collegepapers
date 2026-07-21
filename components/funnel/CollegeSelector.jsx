@@ -36,7 +36,7 @@ export default function CollegeSelector({ university, uniRecord, colleges }) {
             <SelectionCard
               key={college.id}
               name={college.name}
-              logoUrl={null}
+              logoUrl={college.logo_url}
               href={`/institutes/${university}/c/${college.code}`}
               metaText={college.district}
             />
