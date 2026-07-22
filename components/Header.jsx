@@ -30,7 +30,7 @@ export default function Header({ isLanding = false }) {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style={{ color: 'var(--accent-primary)' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
               </svg>
-              collegepapers.in
+              collegepapers
             </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

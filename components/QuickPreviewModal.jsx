@@ -41,7 +41,7 @@ export default function QuickPreviewModal({ paper, isOpen, onClose }) {
       try {
         await navigator.share({
           title: `${paper.subject_name} (${paper.subject_code || 'PYQ'}) - CollegePapers`,
-          text: `Check out and download ${paper.subject_name} (${paper.examination_session || 'PYQ'}) question paper on CollegePapers.in`,
+          text: `Check out and download ${paper.subject_name} (${paper.examination_session || 'PYQ'}) question paper on CollegePapers`,
           url: shareUrl,
         });
         return;

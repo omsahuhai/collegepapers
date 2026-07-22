@@ -28,7 +28,7 @@ export async function GET(request) {
         <html lang="en">
         <head>
           <meta charset="utf-8">
-          <title>Secure Download Protection - CollegePapers.in</title>
+          <title>Secure Download Protection - CollegePapers</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <meta http-equiv="refresh" content="2;url=/" />
           <style>
@@ -105,7 +105,7 @@ export async function GET(request) {
               </svg>
             </div>
             <h2>Protected PYQ Document</h2>
-            <p>Direct file links are protected to prevent unauthorized redistribution and keep our student archives free. Redirecting you to <strong>CollegePapers.in</strong> where you can view and download all papers directly from our repository.</p>
+            <p>Direct file links are protected to prevent unauthorized redistribution and keep our student archives free. Redirecting you to <strong>CollegePapers</strong> where you can view and download all papers directly from our repository.</p>
             <a href="/" class="btn">
               <span>Go to Question Papers Vault</span>
               <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">

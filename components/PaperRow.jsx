@@ -23,7 +23,7 @@ export default function PaperRow({ paper }) {
       try {
         await navigator.share({
           title: `${paper.subject_name} (${paper.subject_code || 'PYQ'}) - CollegePapers`,
-          text: `Check out and download ${paper.subject_name} (${paper.examination_session || 'PYQ'}) question papers on CollegePapers.in`,
+          text: `Check out and download ${paper.subject_name} (${paper.examination_session || 'PYQ'}) question papers on CollegePapers`,
           url: shareUrl,
         });
         return;
