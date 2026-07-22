@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import PassTomorrowModal from './PassTomorrowModal';
 
 export default function ExamIntelligenceModal({ paper, onClose }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [expandedQuestion, setExpandedQuestion] = useState(null);
+  const [showPassTomorrow, setShowPassTomorrow] = useState(false);
 
   useEffect(() => {
     async function fetchIntelligence() {
@@ -104,6 +106,21 @@ export default function ExamIntelligenceModal({ paper, onClose }) {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               
+              <button 
+                onClick={() => setShowPassTomorrow(true)}
+                style={{
+                  width: '100%', padding: '1.25rem', background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-primary))',
+                  color: '#fff', border: 'none', borderRadius: '12px', fontSize: '1.2rem', fontWeight: 'bold',
+                  cursor: 'pointer', boxShadow: '0 4px 15px rgba(42, 161, 152, 0.4)',
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem',
+                  transition: 'transform 0.2s, box-shadow 0.2s'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(42, 161, 152, 0.6)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(42, 161, 152, 0.4)'; }}
+              >
+                🚀 Pass Tomorrow&apos;s Exam
+              </button>
+
               {/* Intelligence Summary Cards */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
                 <div style={{
@@ -220,6 +237,9 @@ export default function ExamIntelligenceModal({ paper, onClose }) {
           )}
         </div>
       </div>
+      {showPassTomorrow && (
+        <PassTomorrowModal paper={paper} onClose={() => setShowPassTomorrow(false)} />
+      )}
     </div>
   );
 }
