@@ -63,24 +63,24 @@
 .formControls {
   display: flex;
   align-items: flex-end;
-  gap: 1.25rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
 .selectsGroup {
   display: flex;
-  gap: 1.15rem;
-  flex: 1;
-  flex-wrap: wrap;
-  min-width: 280px;
+  gap: 1rem;
+  flex: 1 1 340px;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .selectWrapper {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  flex: 1;
-  min-width: 150px;
+  flex: 1 1 0;
+  min-width: 120px;
 }
 
 .label {
@@ -100,7 +100,7 @@
   -moz-appearance: none;
   width: 100%;
   height: 44px;
-  padding: 0.65rem 2.5rem 0.65rem 1rem;
+  padding: 0.65rem 2.1rem 0.65rem 0.85rem;
   border-radius: 12px;
   background: var(--surface-elevated);
   color: var(--text-primary);
@@ -142,7 +142,7 @@
 
 .submitBtn {
   position: relative;
-  padding: 0.75rem 1.75rem;
+  padding: 0.75rem 1.35rem;
   border-radius: 12px;
   background: var(--accent-cyan);
   color: #ffffff;
@@ -185,4 +185,46 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@media (max-width: 680px) {
+  .container {
+    padding: 1.15rem 1rem;
+    border-radius: 16px;
+  }
+
+  .formControls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .selectsGroup {
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .selectWrapper {
+    min-width: 0;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .buttonWrapper {
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .submitBtn {
+    width: 100%;
+  }
 }

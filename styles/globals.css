@@ -126,6 +126,16 @@ a {
   border-color: var(--border-highlight);
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding-inline: 1rem;
+  }
+  .glass-panel {
+    padding: 1.35rem 1.15rem;
+    border-radius: 20px;
+  }
+}
+
 /* Modern DOM Insertion & Exit Animation (@starting-style + allow-discrete) */
 .animate-entry-exit {
   display: block;

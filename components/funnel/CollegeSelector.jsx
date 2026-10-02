@@ -31,7 +31,7 @@ export default function CollegeSelector({ university, uniRecord, colleges }) {
           Select your college or department to browse available degree programs and question paper archives.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.35rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))', gap: '1.35rem' }}>
           {colleges.map((college) => (
             <SelectionCard
               key={college.id}

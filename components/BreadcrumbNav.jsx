@@ -1,14 +1,16 @@
 "use client";
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import styles from '../styles/components/breadcrumb.module.css';
 
 export default function BreadcrumbNav({ steps = [] }) {
+  const navRef = useRef(null);
+
   if (!steps || steps.length === 0) return null;
 
   return (
-    <nav className={styles.breadcrumbNav} aria-label="Hierarchical navigation">
+    <nav ref={navRef} className={styles.breadcrumbNav} aria-label="Hierarchical navigation">
       <div className={styles.item}>
         <Link href="/" className={styles.link} aria-label="Go to Home">
           <svg className={styles.homeIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,28 +24,28 @@ export default function BreadcrumbNav({ steps = [] }) {
         .map((step, index, filteredSteps) => {
           const isLast = index === filteredSteps.length - 1;
 
-        return (
-          <React.Fragment key={index}>
-            <span className={styles.separator} aria-hidden="true">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
+          return (
+            <div key={index} className={styles.stepGroup}>
+              <span className={styles.separator} aria-hidden="true">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
 
-            <div className={styles.item}>
-              {isLast || !step.href ? (
-                <span className={styles.active} aria-current="page">
-                  {step.label}
-                </span>
-              ) : (
-                <Link href={step.href} className={styles.link}>
-                  {step.label}
-                </Link>
-              )}
+              <div className={styles.item}>
+                {isLast || !step.href ? (
+                  <span className={styles.active} aria-current="page">
+                    {step.label}
+                  </span>
+                ) : (
+                  <Link href={step.href} className={styles.link}>
+                    {step.label}
+                  </Link>
+                )}
+              </div>
             </div>
-          </React.Fragment>
-        );
-      })}
+          );
+        })}
     </nav>
   );
 }
