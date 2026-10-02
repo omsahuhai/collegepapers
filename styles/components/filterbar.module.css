@@ -117,6 +117,10 @@
   transition: all 0.2s ease;
 }
 
+:global([data-theme='dark']) .select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2393a1a1' stroke-width='2.2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+}
+
 .select:focus {
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(38, 139, 210, 0.18);

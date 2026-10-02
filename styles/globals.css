@@ -54,9 +54,9 @@
   --border-hover: #2aa198;
   --border-highlight: rgba(42, 161, 152, 0.2);
   
-  --text-primary: #93a1a1;
-  --text-secondary: #586e75;
-  --text-muted: #073642;
+  --text-primary: #fdf6e3;
+  --text-secondary: #b8c7c7;
+  --text-muted: #93a1a1;
   --text-accent: #2aa198;
   
   --shadow-vault: 0 8px 24px rgba(0, 0, 0, 0.3);
