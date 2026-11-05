@@ -69,7 +69,7 @@ export default async function InstitutionPage({ params }) {
                 {semesters.length === 0 ? <p>No verified subjects are available for this programme yet.</p> : semesters.map((semester) => (
                   <section key={semester.id} style={{ marginTop: '1rem' }}>
                     <h4>Semester {semester.semester_number}</h4>
-                    <ul>{offering.subjects.filter((subject) => subject.semester.id === semester.id).map((subject) => <li key={subject.id}>{subject.subject_name} <span style={{ color: 'var(--text-secondary)' }}>({subject.subject_code})</span></li>)}</ul>
+                    <ul>{offering.subjects.filter((subject) => subject.semester.id === semester.id).map((subject) => <li key={subject.id}><Link href={`/institutions/${institution.code}/${offering.code}/${semester.semester_number}/${encodeURIComponent(subject.subject_code)}`}>{subject.subject_name}</Link> <span style={{ color: 'var(--text-secondary)' }}>({subject.subject_code})</span></li>)}</ul>
                   </section>
                 ))}
               </article>
