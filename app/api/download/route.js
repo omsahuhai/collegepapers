@@ -60,13 +60,6 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Unable to create a secure download link.' }, { status: 503 });
     }
 
-    // Count only after eligibility and signed URL creation succeed.
-    const { error: countError } = await supabase
-      .from('papers')
-      .update({ download_count: undefined })
-      .eq('id', paperId);
-    if (countError) console.warn('Download count was not updated:', countError.code);
-
     return NextResponse.redirect(signed.signedUrl, {
       status: 302,
       headers: { 'Cache-Control': 'private, no-store, max-age=0' },
