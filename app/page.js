@@ -4,38 +4,18 @@ import SelectionCard from '../components/SelectionCard';
 import { supabase } from '../lib/supabase';
 import styles from '../styles/components/cards.module.css';
 
-export const revalidate = 3600; // cache for 1 hour
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  // get universities that actually have published papers so we don't show empty links
-  const { data: activePapers, error: papersError } = await supabase
-    .from('papers')
-    .select('university_id')
-    .eq('is_published', true)
-    .not('file_path', 'is', null);
-
-  if (papersError) {
-    console.error('Error fetching active papers for universities:', papersError);
-  }
-
-  const activeUniIds = Array.from(new Set(activePapers?.map((p) => p.university_id).filter(Boolean) || []));
-
-  // get the actual university list
-  let query = supabase.from('universities').select('id, name, logo_url, code, headquarters').order('name', { ascending: true });
-  if (activeUniIds.length > 0) {
-    query = query.in('id', activeUniIds);
-  }
-
-  const { data: universities, error } = await query;
-
-  if (error) {
-    console.error('Error fetching universities:', error);
-  }
+  const { data: institutions, error } = await supabase
+    .from('institutions')
+    .select('id, name, short_name, code, logo_url, district, state')
+    .eq('is_active', true)
+    .order('name', { ascending: true });
 
   return (
     <main className="container animate-fade-in">
       <Header isLanding={true} />
-
       <section className="glass-panel">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.75rem' }}>
           <div>
@@ -47,28 +27,22 @@ export default async function HomePage() {
             </h2>
           </div>
         </div>
-
         {error && (
-          <div style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: 'var(--accent-orange)',
-            padding: '1rem',
-            borderRadius: '12px',
-            fontSize: '0.9rem'
-          }}>
+          <div role="alert" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: 'var(--accent-orange)', padding: '1rem', borderRadius: '12px', fontSize: '0.9rem' }}>
             Failed to load institutional registry. Please refresh the page or verify network connectivity.
           </div>
         )}
-
+        {!error && (!institutions || institutions.length === 0) && (
+          <p>No verified institutions have been added to this development catalogue yet.</p>
+        )}
         <div className={styles.grid}>
-          {universities?.map((uni) => (
+          {(institutions || []).map((institution) => (
             <SelectionCard
-              key={uni.id}
-              name={uni.name}
-              logoUrl={uni.logo_url}
-              href={`/institutes/${uni.code}`}
-              metaText={uni.headquarters}
+              key={institution.id}
+              name={institution.name}
+              logoUrl={institution.logo_url}
+              href={`/institutions/${institution.code}`}
+              metaText={[institution.district, institution.state].filter(Boolean).join(', ') || institution.short_name}
             />
           ))}
         </div>
@@ -76,4 +50,3 @@ export default async function HomePage() {
     </main>
   );
 }
-
