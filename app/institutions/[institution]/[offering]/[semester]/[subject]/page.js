@@ -18,13 +18,13 @@ export default async function SubjectPapersPage({ params, searchParams }) {
   if (!institution) notFound();
 
   const { data: offering } = await supabase.from('institution_course_offerings')
-    .select('id, code, display_name, academic_programs(name), academic_schemes(name)')
+    .select('id, code, display_name, academic_scheme_id, academic_programs(name), academic_schemes(name)')
     .eq('institution_id', institution.id).eq('code', offeringCode).eq('is_active', true).maybeSingle();
   if (!offering) notFound();
 
   const { data: semester } = await supabase.from('semesters')
     .select('id, semester_number, name')
-    .eq('academic_scheme_id', (await supabase.from('institution_course_offerings').select('academic_scheme_id').eq('id', offering.id).single()).data?.academic_scheme_id)
+    .eq('academic_scheme_id', offering.academic_scheme_id)
     .eq('semester_number', Number(semesterNumber)).maybeSingle();
   if (!semester) notFound();
 
@@ -35,7 +35,7 @@ export default async function SubjectPapersPage({ params, searchParams }) {
   if (!subject) notFound();
 
   const { data: papers, error } = await supabase.from('papers')
-    .select('id, title, examination_session, examination_year, file_size_bytes, examination_categories(category_code, label), assessment_types(name), paper_student_categories(student_category)')
+    .select('id, title, examination_session, examination_year, file_size_bytes, examination_categories(category_code, display_name), assessment_types(name), paper_student_categories(student_category)')
     .eq('course_subject_id', subject.id).eq('is_published', true)
     .order('examination_year', { ascending: false });
 
@@ -74,7 +74,7 @@ export default async function SubjectPapersPage({ params, searchParams }) {
           {visiblePapers.map((paper) => (
             <article key={paper.id} className="glass-panel" style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <div>
-                <strong>{paper.title || paper.examination_categories?.label || 'Question paper'}</strong>
+                <strong>{paper.title || paper.examination_categories?.display_name || 'Question paper'}</strong>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '.25rem' }}>{paper.examination_session}{paper.examination_year ? ` · ${paper.examination_year}` : ''}{paper.assessment_types?.name ? ` · ${paper.assessment_types.name}` : ''}</p>
               </div>
               <a className="glass-panel" style={{ padding: '.65rem 1rem', textDecoration: 'none' }} href={`/api/download?id=${paper.id}&institution=${institution.id}&category=${category}`}>Download PDF</a>
