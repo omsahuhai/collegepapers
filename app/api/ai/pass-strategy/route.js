@@ -1,119 +1,84 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '../../../../lib/supabase';
-import { GoogleGenAI, Type } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
+
+export const dynamic = 'force-dynamic';
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function POST(request) {
   try {
-    const { paper_id, exam, studyHours, completed, goal } = await request.json();
+    const body = await request.json();
+    const paperId = body.paper_id;
+    const institutionId = body.institution;
+    const category = String(body.category || '').toLowerCase();
+    const exam = String(body.exam || '').slice(0, 120);
+    const studyHours = Number(body.studyHours);
+    const completed = Number(body.completed);
+    const goal = String(body.goal || '').slice(0, 120);
 
-    if (!paper_id || !exam || typeof studyHours !== 'number' || typeof completed !== 'number' || !goal) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!UUID.test(paperId || '') || !UUID.test(institutionId || '') ||
+        !['regular', 'private'].includes(category) || !exam || !goal ||
+        !Number.isFinite(studyHours) || studyHours < 0.5 || studyHours > 48 ||
+        !Number.isFinite(completed) || completed < 0 || completed > 100) {
+      return NextResponse.json({ error: 'Invalid strategy request.' }, { status: 400 });
     }
 
-    // 1. Fetch Paper details
-    const { data: paperData, error: paperError } = await supabase
+    const { data: allowed, error: eligibilityError } = await supabase.rpc('is_paper_visible_to_institution', {
+      p_paper_id: paperId, p_institution_id: institutionId, p_student_category: category,
+    });
+    if (eligibilityError) return NextResponse.json({ error: 'Unable to verify paper eligibility.' }, { status: 503 });
+    if (allowed !== true) return NextResponse.json({ error: 'Paper is not available in this academic context.' }, { status: 403 });
+
+    const { data: paper, error: paperError } = await supabase
       .from('papers')
-      .select('subject_name, subject_code')
-      .eq('id', paper_id)
-      .single();
+      .select('id, course_subjects(subject_name, subject_code), paper_intelligence(id, status, summary, syllabus_weightage, topic_frequency)')
+      .eq('id', paperId).eq('is_published', true).single();
+    if (paperError || !paper) return NextResponse.json({ error: 'Paper not found.' }, { status: 404 });
 
-    if (paperError || !paperData) {
-      return NextResponse.json({ error: 'Paper not found' }, { status: 404 });
+    const intelligence = Array.isArray(paper.paper_intelligence) ? paper.paper_intelligence[0] : paper.paper_intelligence;
+    if (!intelligence || intelligence.status !== 'completed') {
+      return NextResponse.json({ error: 'Complete AI analysis is not available for this paper yet.' }, { status: 409 });
     }
 
-    // 2. Fetch Intelligence and Questions
-    const { data: intelligence } = await supabase
-      .from('paper_intelligence')
-      .select('syllabus_mapping, key_topics')
-      .eq('paper_id', paper_id)
-      .single();
-
-    const { data: questions } = await supabase
+    const { data: questions, error: questionError } = await supabase
       .from('paper_questions')
-      .select('question_text, marks, syllabus_unit')
-      .eq('paper_id', paper_id);
+      .select('question_text, marks, unit_reference, topic_tags')
+      .eq('paper_intelligence_id', intelligence.id)
+      .order('display_order', { ascending: true }).limit(20);
+    if (questionError) throw questionError;
 
-    // 3. Prepare Gemini API
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error("GEMINI_API_KEY is not configured.");
-    }
-    
+    if (!process.env.GEMINI_API_KEY) return NextResponse.json({ error: 'AI strategy is temporarily unavailable.' }, { status: 503 });
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const subject = Array.isArray(paper.course_subjects) ? paper.course_subjects[0] : paper.course_subjects;
 
-    // Define Schema
-    const strategySchema = {
-      type: Type.OBJECT,
-      properties: {
-        strategyTitle: { type: Type.STRING, description: "Catchy title for the plan, e.g. '6-Hour Survival Plan'" },
-        confidence: { type: Type.INTEGER, description: "Percentage probability of passing (0-100)" },
-        expectedMarks: {
-          type: Type.OBJECT,
-          properties: {
-            minimum: { type: Type.INTEGER },
-            maximum: { type: Type.INTEGER }
-          }
-        },
-        riskLevel: { type: Type.STRING, description: "'Low', 'Medium', or 'High'" },
-        focusTopics: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Top 3-5 topics to focus on" },
-        skipTopics: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Topics to completely ignore" },
-        memorizeQuestions: { type: Type.ARRAY, items: { type: Type.STRING }, description: "2-3 high-yield questions to memorize" },
-        revisionTimeline: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              time: { type: Type.STRING, description: "e.g., 'Hour 1-2' or '6:00-7:00'" },
-              task: { type: Type.STRING, description: "Actionable study task" }
-            }
-          }
-        },
-        examHallStrategy: { type: Type.ARRAY, items: { type: Type.STRING }, description: "3-4 actionable tips for writing the exam" },
-        motivation: { type: Type.STRING, description: "A final emotional, encouraging quote or thought." }
-      },
-      required: ["strategyTitle", "confidence", "expectedMarks", "riskLevel", "focusTopics", "skipTopics", "memorizeQuestions", "revisionTimeline", "examHallStrategy", "motivation"]
-    };
-
-    const prompt = `
-You are an experienced university professor and exam strategist.
-The student is preparing only a few hours before the examination. Their objective is to maximize marks within the available time, not to study the complete syllabus.
-
-Student Profile:
-- Exam Timing: ${exam}
-- Available Study Hours: ${studyHours} hours
-- Completed Syllabus: ${completed}%
-- Target Goal: ${goal}
-
-Subject: ${paperData.subject_name} (${paperData.subject_code})
-
-Provided Context:
-- Syllabus Weightage: ${JSON.stringify(intelligence?.syllabus_mapping || {})}
-- Recurring Key Topics: ${JSON.stringify(intelligence?.key_topics || [])}
-- Past Questions Sample: ${JSON.stringify(questions?.slice(0, 10).map(q => q.question_text) || [])}
-
-Produce a realistic, high-impact revision strategy.
-Prioritize topics that provide the highest expected marks per hour of study based on the weightage. 
-Recommend what to study, what to postpone, what questions to memorize, and how to spend the remaining ${studyHours} hours.
-Avoid suggesting that the student study everything. Be honest about uncertainty.
-Return only valid JSON matching the provided schema.
-`;
+    const prompt = [
+      'Create a cautious, practical exam revision strategy. Do not claim guaranteed marks or pass probability.',
+      'Return valid JSON with keys: strategyTitle, confidenceNote, focusTopics, postponeTopics, practiceQuestions, revisionTimeline, examHallStrategy.',
+      'focusTopics and postponeTopics are arrays of strings.',
+      'practiceQuestions is an array of strings.',
+      'revisionTimeline is an array of objects with time and task strings.',
+      'examHallStrategy is an array of strings.',
+      'Treat historical frequency as evidence, not a prediction. Clearly state uncertainty.',
+      JSON.stringify({
+        subject: subject?.subject_name, subjectCode: subject?.subject_code, exam, studyHours,
+        completedSyllabusPercent: completed, goal,
+        syllabusWeightage: intelligence.syllabus_weightage,
+        topicFrequency: intelligence.topic_frequency,
+        summary: intelligence.summary,
+        questions: (questions || []).map(q => ({ text: q.question_text, marks: q.marks, unit: q.unit_reference, tags: q.topic_tags })),
+      }),
+    ].join('\n\n');
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.5-flash-lite',
       contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: strategySchema,
-        temperature: 0.2, // low temperature for structured logic
-      }
+      config: { responseMimeType: 'application/json', temperature: 0.2 },
     });
-
-    const resultText = response.text;
-    const strategyData = JSON.parse(resultText);
-
-    return NextResponse.json({ strategy: strategyData }, { status: 200 });
-
-  } catch (err) {
-    console.error("Pass Strategy Error:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const strategy = JSON.parse(response.text || '{}');
+    return NextResponse.json({ strategy }, { headers: { 'Cache-Control': 'private, no-store, max-age=0' } });
+  } catch (error) {
+    console.error('Pass strategy failed:', error);
+    return NextResponse.json({ error: 'Unable to generate a study strategy right now.' }, { status: 500 });
   }
 }
